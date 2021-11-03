@@ -1,20 +1,51 @@
 fun main (){
-    print("Hello world")
-    val titular = "Alex"
-    val numeroConta = 1000
-    val saldo = 0.0
+    var contaEduardo = Conta("Eduardo", 1234)
+    var contaVendedor = Conta("José", 1235)
 
-    println("Titular $titular")
-    println("Numero da conta $numeroConta")
-    println("Saldo da conta $saldo")
+    contaEduardo.deposita(20.0)
+    println("Saldo da conta de ${contaEduardo.titular}: ${contaEduardo.saldo}")
 
-    testaCondicoes(saldo)
+    if(contaEduardo.transfere(15, contaVendedor))
+        println("Valor transferido com sucesso")
+
+    if(contaEduardo.saca(5.0))
+        println("Valor sacado com sucesso")
+
+    testaCondicoes(contaEduardo)
 }
-fun testaCondicoes (saldo: Double){
+
+class Conta(
+        val titular: String,
+        val numero: Int
+){
+    var saldo: Double = 0.0
+        private set
+
+    fun deposita(valor: Double){
+        this.saldo += valor
+    }
+    fun saca(valor: Double): Boolean{
+        if(this.saldo >= valor)
+            this.saldo -= valor
+        else
+            return false
+        return true
+    }
+    fun transfere(valor: Int, destino: Conta): Boolean{
+        if(saldo >= valor){
+            saldo -= valor
+            destino.saldo += valor
+            return true
+        }
+        return false
+    }
+}
+
+fun testaCondicoes (conta: Conta){
     when {
-        saldo > 0.0 ->
+        conta.saldo > 0.0 ->
             println("Conta é positiva")
-        saldo == 0.0 ->
+        conta.saldo == 0.0 ->
             println("Conta é neutra")
         else ->
             println("Conta é negativa")
